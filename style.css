@@ -33,9 +33,17 @@ input {
     font-size: 2em;
     border: 0px;
     text-align: right;
-    outline: none;
-    background-color: #f9f9f9;
+    outline: 20px solid white;
+    outline-offset: 0;
+    background-color: white;
     margin-right: 20px;
+}
+
+input,
+input:hover,
+input:focus,
+input:active {
+    background-color: white;
 }
 
 td[colspan="4"],

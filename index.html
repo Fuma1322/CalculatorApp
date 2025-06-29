@@ -12,30 +12,33 @@
                 </td>
             </tr>
             <tr>
+                <td onclick="btnAcPressed()">AC</td>
+                <td class="operator" onclick="operatorBtnPressed('*')">x</td>
+                <td class="operator" onclick="operatorBtnPressed('-')">-</td>
+                <td class="operator" onclick="operatorBtnPressed('+')">+</td>
+            </tr>
+            <tr>
                 <td onclick="digitBtnPressed(7)">7</td>
                 <td onclick="digitBtnPressed(8)">8</td>
                 <td onclick="digitBtnPressed(9)">9</td>
-                <td class="operator" onclick="operatorBtnPressed('*')">x</td>
+                <td class="operator" onclick="operatorBtnPressed('/')">/</td>
             </tr>
             <tr>
                 <td onclick="digitBtnPressed(4)">4</td>
                 <td onclick="digitBtnPressed(5)">5</td>
                 <td onclick="digitBtnPressed(6)">6</td>
-                <td class="operator" onclick="operatorBtnPressed('-')">-</td>
+                <td class="operator" onclick="sqrtBtnPressed()">√</td>
             </tr>
             <tr>
                 <td onclick="digitBtnPressed(1)">1</td>
                 <td onclick="digitBtnPressed(2)">2</td>
                 <td onclick="digitBtnPressed(3)">3</td>
-                <td class="operator" onclick="operatorBtnPressed('+')">+</td>
+                <td class="operator" onclick="powerBtnPressed()">xʸ</td>
             </tr>
             <tr>
                 <td colspan="2" onclick="digitBtnPressed(0)">0</td>
-                <td onclick="btnAcPressed()">AC</td>
-                <td class="operator" onclick="operatorBtnPressed('/')">/</td>
-            </tr>
-            <tr>
-                <td class="equal" colspan="4" onclick="equalBtnPressed()">=</td>
+                <td onclick="decimalBtnPressed('.')">.</td>
+                <td class="equal" onclick="equalBtnPressed()">=</td>
             </tr>
         </table>
 
@@ -71,30 +74,63 @@
             }
 
             //Event handler for equal-to button
-            function equalBtnPressed (operator) {
-                var value2 = parseInt(document.getElementById("inputBox").value); //converting the text into numbers for math solving
+            function equalBtnPressed() {
+                var inputValue = document.getElementById("inputBox").value;
                 var finalTotal;
 
                 switch (currentOperator) {
                     case "+":
-                        finalTotal = value1 + value2;
-                        break
                     case "-":
-                        finalTotal = value1 - value2;
-                        break
                     case "*":
-                        finalTotal = value1 * value2;
-                        break
                     case "/":
-                        finalTotal = value1 / value2;
-                        break
-                }
-                document.getElementById("inputBox").value = finalTotal;
+                    case "^":
+                        var value2 = parseFloat(inputValue);
+                        switch (currentOperator) {
+                            case "+": finalTotal = value1 + value2; break;
+                            case "-": finalTotal = value1 - value2; break;
+                            case "*": finalTotal = value1 * value2; break;
+                            case "/": finalTotal = value1 / value2; break;
+                            case "^": finalTotal = Math.pow(value1, value2); break;
+                        }
+                        break;
 
+                    case "√":
+                        var numPart = inputValue.replace("√", "");
+                        var value = parseFloat(numPart);
+                        if (value < 0) {
+                            finalTotal = "Error";
+                        } else {
+                            finalTotal = Math.sqrt(value);
+                        }
+                        break;
+                }
+
+                document.getElementById("inputBox").value = finalTotal;
                 value1 = 0;
                 newLine = true;
             }
 
+            function decimalBtnPressed(dot) {
+                var currentValue = document.getElementById("inputBox").value;
+                if (newLine) {
+                    document.getElementById("inputBox").value = "0.";
+                    newLine = false;
+                } else if (!currentValue.includes(".")) {
+                    document.getElementById("inputBox").value = currentValue + ".";
+                }
+            }
+
+            function sqrtBtnPressed() {
+                currentOperator = "√";
+                newLine = false;
+                document.getElementById("inputBox").value = "√";
+            }
+
+            function powerBtnPressed() {
+                currentOperator = "^";
+                value1 = parseFloat(document.getElementById("inputBox").value);
+                newLine = true;
+            }
         </script>
     </body>
 </html>
